@@ -14,18 +14,22 @@ public class EndEvents : MonoBehaviour {
 	bool hasTriggeredEnd = false;
 	bool hasTriggeredMusicEnd = false;
 
-	const float musicFadeTime = 4.0f;
+	const float musicFadeTime = 2.0f;
 	const float musicFadePerSecond = 1.0f / musicFadeTime;
 	float musicVolume = 1.0f;
 
 	Animator animator;
 
 	public AudioSource audioSource;
+	AudioSource collectAudioSource;
+	Animator collectAnimator;
 
 	// Use this for initialization
 	void Start () 
 	{
 		animator = endGroup.gameObject.GetComponent<Animator>();
+		collectAudioSource = gameObject.GetComponent<AudioSource>();
+		collectAnimator = gameObject.GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
@@ -77,6 +81,8 @@ public class EndEvents : MonoBehaviour {
 		if (otherGameObject.tag == "Player")
 		{
 			hasTriggeredEnd = true;
+			collectAudioSource.Play();
+			collectAnimator.SetBool("Collected", true);
 		}
 	}
 }
