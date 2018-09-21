@@ -27,6 +27,8 @@ public class EndEvents : MonoBehaviour {
 	Animator collectAnimator;
 
 	GameObject playerObject;
+	const float thrustX = 10.0f;
+	const float thrustY = 20.0f;
 
 	// Use this for initialization
 	void Start () 
@@ -100,7 +102,9 @@ public class EndEvents : MonoBehaviour {
 			hasTriggeredEnd = true;
 			collectAudioSource.Play();
 			collectAnimator.SetBool("Collected", true);
+
 			playerObject = otherGameObject.gameObject;
+			playerObject.GetComponent<ApplyForce>().ApplyThrust(thrustX, thrustY);
 		}
 	}
 }
