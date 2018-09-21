@@ -18,11 +18,15 @@ public class EndEvents : MonoBehaviour {
 	const float musicFadePerSecond = 1.0f / musicFadeTime;
 	float musicVolume = 1.0f;
 
+	float timeBeforeFade = 2.0f;
+
 	Animator animator;
 
 	public AudioSource audioSource;
 	AudioSource collectAudioSource;
 	Animator collectAnimator;
+
+	GameObject playerObject;
 
 	// Use this for initialization
 	void Start () 
@@ -37,6 +41,12 @@ public class EndEvents : MonoBehaviour {
 	{
 		if (!hasTriggeredEnd)
 		{
+			return;
+		}
+
+		if (timeBeforeFade > 0.0f)
+		{
+			timeBeforeFade -= Time.deltaTime;
 			return;
 		}
 
@@ -70,6 +80,11 @@ public class EndEvents : MonoBehaviour {
 			fadeFactor = 1.0f;
 			animator.SetBool("DisplayTexts", true);
 			hasTriggeredMusicEnd = true;
+
+			if (playerObject != null)
+			{
+				playerObject.SetActive(false);
+			}
 		}
 
 		startGroup.alpha = 1.0f - fadeFactor;
@@ -80,9 +95,12 @@ public class EndEvents : MonoBehaviour {
 	{
 		if (otherGameObject.tag == "Player")
 		{
+			Animator playerAnimator = otherGameObject.GetComponent<Animator>();
+			playerAnimator.SetBool("IsOnJetpack", true);
 			hasTriggeredEnd = true;
 			collectAudioSource.Play();
 			collectAnimator.SetBool("Collected", true);
+			playerObject = otherGameObject.gameObject;
 		}
 	}
 }
